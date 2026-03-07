@@ -4,6 +4,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/home';
 import {BrowserRouter,Router,Route, Routes} from "react-router-dom";
+import ProtectedRoute from './components/ProtectedRoute';
+import PublicRoute from './components/PublicRoute';
+import Admin from './pages/Admin';
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -12,9 +15,10 @@ function App() {
     <>
     <BrowserRouter>
       <Routes>
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/register' element={<Register/>}/>
-        <Route path='/home' element={<Home/>}/>
+        <Route path='/login' element={<PublicRoute><Login/></PublicRoute>}/>
+        <Route path='/register' element={<PublicRoute><Register/></PublicRoute>}/>
+        <Route path='/home' element={<ProtectedRoute><Home/></ProtectedRoute>}/>
+        <Route path='/admin' element={<Admin/>}/>
       </Routes>
     </BrowserRouter>
     </>

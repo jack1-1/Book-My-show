@@ -70,7 +70,7 @@ async function signinUserController(req,res){
 
 //
 async function validateCurrentuser(req,res){
-    // console.log('user identified');
+    console.log('user identified');
  const userId=req.userId;
  if(userId===undefined){
     return res.status(401).json({message:"Not authorized, no token found"});

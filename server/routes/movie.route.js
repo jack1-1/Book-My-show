@@ -38,6 +38,7 @@ movieRouter.put('/update-movie/:id', async (req, res) => {
         })
     }
 })
+
 //delete movie
 movieRouter.delete('/delete-movie/:id', async (req, res) => {
     try {
@@ -57,6 +58,7 @@ movieRouter.delete('/delete-movie/:id', async (req, res) => {
         })
     }
 })
+
 //get all movies
 movieRouter.get('/all-movies', async (req, res) => {
     try {
@@ -70,8 +72,8 @@ movieRouter.get('/all-movies', async (req, res) => {
 
     }
 })
-//get specific movie
 
+//get specific movie
 movieRouter.get('/:id', async (req, res) => {
     try {
         const movie = await Movie.findById(req.params.id);

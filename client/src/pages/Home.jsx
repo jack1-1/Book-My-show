@@ -1,87 +1,45 @@
-import React, { useEffect } from 'react';
-import { Layout, Input, Button, Avatar, Space, Typography } from 'antd';
-import { UserOutlined, LogoutOutlined, SearchOutlined } from '@ant-design/icons';
-import { getCurrentUser } from '../calls/authCalls.js';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUserData } from '../redux/userSlice.js';
-
-const { Header, Content } = Layout;
-const { Search } = Input;
-const { Text } = Typography;
-
+import React from 'react'
+import Navbar from '../components/Navbar'
+import { useState, useEffect } from 'react'
+import { getAllMovies } from '../calls/movieCalls.js';
+import MovieCard from '../components/MovieCard.jsx';
 function Home() {
-  const { userData } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-
-  const getUserData = async () => {
-    const userData = await getCurrentUser();
-    dispatch(setUserData(userData));
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
-  };
+  const [movies, setMovies] = useState(null);
 
   useEffect(() => {
-    getUserData();
+    (async () => {
+      const movies = await getAllMovies();
+      setMovies(movies.data);
+    })()
   }, []);
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+  <div>
+    <Navbar />
 
-      {/* NAVBAR */}
-      <Header
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          background: "rgb(235, 78, 98)",
-          padding: "0 24px"
-        }}
-      >
-
-        {/* Left */}
-        <Text style={{ color: "black", fontSize: 18, fontWeight: 600 }}>
-          MyApp
-        </Text>
-
-        {/* Center Search */}
-        <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
-          <Input
-            placeholder="Search..."
-            prefix={<SearchOutlined />}
-            allowClear
-            style={{
-              width: 420,
-              borderRadius: 20
-            }}
+    <div
+      style={{
+        marginTop: "30px",        // space between Navbar and cards
+        display: "flex",
+        flexWrap: "wrap",         // moves cards to next row if needed
+        gap: "20px",              // space between cards
+        padding: "20px"
+      }}
+    >
+      {movies &&
+        movies.map((movie, index) => (
+          <MovieCard
+            key={index}
+            poster={movie.posterPath}
+            title={movie.title}
+            rating={movie.ratings}
+            genre={movie.genre}
+            language={movie.language}
           />
-        </div>
-
-        {/* Right */}
-        <Space>
-          <Avatar icon={<UserOutlined />} />
-          <Text style={{ color: "black" }}>{userData?.name}</Text>
-
-          <Button
-            danger
-            icon={<LogoutOutlined />}
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
-        </Space>
-
-      </Header>
-
-      {/* PAGE CONTENT */}
-      <Content style={{ padding: "30px" }}>
-        <h2>Welcome {userData?.name}</h2>
-      </Content>
-
-    </Layout>
-  );
+        ))}
+    </div>
+  </div>
+);
 }
 
-export default Home;
+export default Home
