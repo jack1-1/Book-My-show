@@ -20,9 +20,9 @@ movieRouter.post('/add-movie', async (req, res) => {
 });
 
 //update movie
-movieRouter.put('/update-movie/:id', async (req, res) => {
+movieRouter.put('/update-movie', async (req, res) => {
     try {
-        const movieId = req.params.id;
+        const movieId = req.body.movieId;
 
         const movie = await Movie.findByIdAndUpdate(movieId, req.body);
         res.send({

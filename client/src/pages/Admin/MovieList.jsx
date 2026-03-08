@@ -1,9 +1,107 @@
-import React from 'react'
-
+import React, { useEffect } from 'react';
+import { getAllMovies } from '../../calls/movieCalls';
+import { useState } from 'react';
+import { Table, Button } from 'antd';
+import moment from 'moment';
+import AddMovieForm from './AddMovieForm';
+import {
+    EditOutlined,
+    DeleteOutlined
+} from '@ant-design/icons';
 function MovieList() {
-  return (
-    <h1>Movie List</h1>
-  )
+    //get all movies
+    const [movies, setMovies] = useState([]);
+    const [isModalOpen, setisModalOpen] = useState(false);
+    const [formType, setFormType] = useState('add');
+    const [selectedMovie, setSelectedMovie] = useState(null);
+    const moviesList = async () => {
+        try {
+            const response = await getAllMovies();
+            setMovies(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        moviesList()
+    }, []);
+
+    const tableHeadings = [
+        {
+            title: 'Poster',
+            dataIndex: 'posterPath',
+            render: (text, data) => {
+                return (<img width='75' height='120' src={data.posterPath} />)
+            }
+        },
+        {
+            title: 'Title',
+            dataIndex: 'title'
+        },
+        {
+            title: 'Description',
+            dataIndex: 'description'
+        },
+        {
+            title: 'Language',
+            dataIndex: 'language'
+        },
+        {
+            title: 'Genre',
+            dataIndex: 'genre'
+        },
+        {
+            title: 'Release Date',
+            dataIndex: 'releaseDate',
+            render: (text, data) => {
+                return moment(data.releaseDate).format('DD-MM-YYYY')
+            }
+        },
+        {
+            title: 'Duration',
+            dataIndex: 'duration',
+            render: (text) => {
+                return `${text} min`
+            }
+        },
+        {
+            title: 'Ratings',
+            dataIndex: 'ratings'
+        },
+        {
+            title: 'Action',
+            render: (text, data) => {
+                return <div>
+                    <Button onClick={() => {
+                        setisModalOpen(true);
+                        setFormType('edit'),
+                        setSelectedMovie(data)
+                    }}>
+                    <EditOutlined />
+                    </Button>
+                    <Button><DeleteOutlined /></Button>
+                </div>
+            }
+        }
+    ]
+    return (
+        <div >
+            <div className='d-flex justify-content-end'>
+                <Button onClick={() => {
+                    setisModalOpen(true);
+                    setSelectedMovie(null)
+                }}>Add Movie</Button>
+            </div>
+            <Table dataSource={movies} columns={tableHeadings} />
+            {isModalOpen && <AddMovieForm isModalOpen={isModalOpen} setIsModalOpen={setisModalOpen} 
+            formType={formType} 
+            selectedMovie={selectedMovie}
+            setSelectedMovie={setSelectedMovie}/>}
+        </div>
+
+
+    )
 }
 
 export default MovieList

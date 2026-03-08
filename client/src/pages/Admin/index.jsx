@@ -1,18 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Tabs } from 'antd'
 import MovieList from './MovieList'
 import TheatreList from './TheatreList'
 function Admin() {
+    
     const tabItems=[
         {
             key:'1',
             label:'Movies',
-            childern:<MovieList/>
+            children:<MovieList/>
         },
         {
              key:'2',
             label:'TheatreList',
-            childern:<TheatreList/>
+            children:<TheatreList/>
         }
     ]
   return (

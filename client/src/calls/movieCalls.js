@@ -14,3 +14,30 @@ export const getAllMovies = async () => {
 
     }
 }
+
+export const addMovie = async (values) => {
+    try {
+        const response = await api.post('/api/movie/add-movie',values);
+        return response.data
+    } catch (error) {
+
+    }
+}
+
+export const updateMovie = async (payload) => {
+    try {
+        const response = await api.put(`/api/movie/update-movie`,payload);
+        return response.data
+    } catch (error) {
+
+    }
+}
+
+export const getMovie = async (values) => {
+    try {
+        const response = await api.post('/api/movie/id',values);
+        return response.data
+    } catch (error) {
+
+    }
+}
