@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { getAllMovies } from '../../calls/movieCalls';
 import { useState } from 'react';
 import { Table, Button } from 'antd';
-import moment from 'moment';
 import AddMovieForm from './AddMovieForm';
 import {
     EditOutlined,
@@ -55,7 +54,11 @@ function MovieList() {
             title: 'Release Date',
             dataIndex: 'releaseDate',
             render: (text, data) => {
-                return moment(data.releaseDate).format('DD-MM-YYYY')
+                const date = new Date(data.releaseDate);
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}-${month}-${year}`;
             }
         },
         {
