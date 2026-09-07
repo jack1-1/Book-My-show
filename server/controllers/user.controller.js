@@ -55,7 +55,8 @@ async function signinUserController(req,res){
     res.cookie('jwtToken',token,{
         httpOnly:true,
         // maxAge:
-    })
+    });
+        console.log("response login",res);
      res.send({
             success:true,
             message:'You logged in successfully',
