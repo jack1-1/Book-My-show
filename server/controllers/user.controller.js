@@ -54,6 +54,8 @@ async function signinUserController(req,res){
     const token=jwt.sign({userId:user._id},process.env.JWT_SECRET, {expiresIn:'10d'});
     res.cookie('jwtToken',token,{
         httpOnly:true,
+        secure: true,
+        sameSite: 'none'
         // maxAge:
     });
         console.log("response login",res);
