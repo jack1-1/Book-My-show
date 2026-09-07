@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
  const isAuth = async (req, res, next) => {
     const token = req.cookies.jwtToken;
     if (!token) {
+     console.log("token not found");
         return res.status(401).json({ message: "Not authorized,token validation failed !" });
     }
 
@@ -11,6 +12,7 @@ const jwt = require("jsonwebtoken");
       next();
       
     } catch (error) {
+     console.log("inside catch block");
         return res.status(401).json({ message: "Not authorized,token validation failed !" })
     }
 }
